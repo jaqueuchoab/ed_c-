@@ -1,0 +1,1 @@
+- Estrutura nó: Contém dados e o endereço do sucessor da lista (os nós normais)
