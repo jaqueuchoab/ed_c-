@@ -18,6 +18,10 @@ int main() {
     // Realiza a leitura
     cin.get(character);
   }
+
+  /*Imprimindo a pilha antes das remoções*/
+  cout << "\nFila atual: ";
+  queue.print();
   
   // Enquanto a fila não for vazia
   while (!queue.isEmpty())
@@ -29,4 +33,8 @@ int main() {
     cout << queueChar;
   }
   cout << endl;
+
+  /*Imprimindo a pilha após as remoções*/
+  cout << "\nFila após remoções: ";
+  queue.print();
 }

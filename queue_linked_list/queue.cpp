@@ -64,7 +64,7 @@ void Queue::enqueue(ItemType newItem)
   if (!isFull())
   {
     // Criando o novo nó a ser enfileirado
-    NodeType *newNode;
+    NodeType *newNode = new NodeType;
     // Fazendo com que esse novo ponteiro receba o valor de newItem no atributo info da struct, o elemento passado por parẫmetro
     newNode->info = newItem;
     // Fazendo com que newNode tenha uma referência para o próximo que até o momento não foi definido
@@ -83,17 +83,21 @@ void Queue::enqueue(ItemType newItem)
     }
     // E de qualquer forma, o ponteiro rear deve apontar para esse novo nó, visto que em sequência de inserção o último nó da fila será sempre o último a sair dela. Se a fila tem apenas um nó, então o primeiro e o último nó serão o mesmo.
     rear = newNode;
-  } else {
+  }
+  else
+  {
     throw "Queue is already full!";
   }
 }
 
 // Remover elemento da fila (se atentar que a função de remoção retorna o tipo de dado que a fila guarda)
-ItemType Queue::dequeue() {
+ItemType Queue::dequeue()
+{
   // Verificando se a fila está vazia, pois se ela estiver, a operação não pode ser feita
-  if(!isEmpty()) {
+  if (!isEmpty())
+  {
     // Criando ponteiro temporário
-    NodeType* tempPont;
+    NodeType *tempPont;
     // Fazendo com que o temporário aponte para o início da fila
     tempPont = front;
     // Criando var item do tipo ItemType (tipo que a fila guarda) e atribuindo a ela o valor guardado no front info (primeiro elemento da fila)
@@ -102,7 +106,8 @@ ItemType Queue::dequeue() {
     front = front->next;
 
     // Verificando se o primeiro elemento da fila (que agora é o elemento que sucede o antigo primeiro da fila, como foi alterado na linha anterior :) não existe, ou seja, se o próximo elemento é igual a nulo.
-    if(front == NULL) {
+    if (front == NULL)
+    {
       // Essa atribuição indicará para uma fila que contém apenas um único elemento que agora ela está totalmente vazia, atribuição necessário, visto que, quando há um único elemento na fila tanto o front quanto o rear (primeiro e último elemento da fila) apontam para o mesmo endereço de memória/mesmo nó.
       rear = NULL;
     }
@@ -110,22 +115,30 @@ ItemType Queue::dequeue() {
     delete tempPont;
     // Retornando item que foi excluído
     return item;
-  } else {
-    // Erro lançado se a fila estiver vazia 
+  }
+  else
+  {
+    // Erro lançado se a fila estiver vazia
     throw "Queue is empty!";
   }
 }
 
 void Queue::print() const
 {
-  // Ponteiro temporário 
-  NodeType* tempPont = front;
-  // Enquanto temporário for diferente de NULL
-  while (tempPont != NULL) {
-    // Imprimir o item armazenado
-    cout << tempPont->info;
-    // Temporário agora apontará para o próx item, até que a condição do looping seja atendida
-    tempPont = tempPont->next;
+  // Ponteiro temporário
+  NodeType *tempPont = front;
+  if (!isEmpty())
+  {
+    // Enquanto temporário for diferente de NULL
+    while (tempPont != NULL)
+    {
+      // Imprimir o item armazenado
+      cout << tempPont->info;
+      // Temporário agora apontará para o próx item, até que a condição do looping seja atendida
+      tempPont = tempPont->next;
+    }
+  } else {
+    cout << "Fila vazia!";
   }
   cout << endl;
 }
