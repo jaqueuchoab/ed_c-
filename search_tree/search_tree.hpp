@@ -26,7 +26,7 @@ class SearchTree {
       void insertStudent(NodeType*& tree, Student item);
       void deleteStudent(NodeType*& tree, int item);
       void deleteNode(NodeType*& tree);
-      void getSuccessor(NodeType*& tree, Student& data);
+      void getSuccessor(NodeType* tree, Student& data);
       void printTree(NodeType* tree) const;
       void printPreOrder(NodeType* tree) const;
       void printInOrder(NodeType* tree) const;

@@ -78,3 +78,40 @@ void SearchTree::printPostOrder(NodeType* tree) const {
     std::cout << tree->aluno.getNome() << " , ";
   }
 }
+
+void SearchTree::deleteStudent(NodeType*& tree, int aluno) {
+  if (tree == NULL) return; 
+  if(aluno < tree->aluno.getRa()) {
+    deleteStudent(tree->left, aluno);
+  } else if (aluno > tree->aluno.getRa()) {
+    deleteStudent(tree->right, aluno);
+  } else {
+    deleteNode(tree);
+  }
+}
+
+void SearchTree::deleteNode(NodeType*& tree) {
+  Student data;
+  NodeType* tempPont;
+  tempPont = tree;
+
+  if(tree->left == NULL) {
+    tree = tree->right;
+    delete tempPont;
+  } else if (tree->right == NULL) {
+    tree = tree->left;
+    delete tempPont;
+  } else {
+    getSuccessor(tree, data);
+    tree->aluno =  data;
+    deleteStudent((tree->right), data.getRa());
+  }
+}
+
+void SearchTree::getSuccessor(NodeType* tree, Student& data) {
+  tree = tree->right;
+  while (tree->left != NULL) {
+    tree = tree->left;
+  }
+  data = tree->aluno;
+}
