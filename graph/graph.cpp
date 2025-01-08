@@ -1,5 +1,7 @@
 #include "graph.hpp"
 #include "queue.hpp"
+#include "queue_vertex.hpp"
+#include "stack.hpp"
 #include "vertex.hpp"
 #include <iostream>
 
@@ -101,6 +103,22 @@ void Graph::getAdjacents(Vertex vertex, Queue &adjVertices)
   }
 }
 
+void Graph::getAdjacentsVertex(Vertex vertex, QueueVertex &adjVertices)
+{
+  int fromIndex;
+  int toIndex;
+
+  // Pega o index do vertice em questão
+  fromIndex = getIndex(vertex);
+  // Intera entre todos os outros vértices que estão ao redor desse fromIndex, ou seja do indice incial
+  for (toIndex = 0; toIndex < numVertices; toIndex++)
+  {
+    if (edges[fromIndex][toIndex] != NULL_EDGE)
+      // Uma cópia do elemento é adicionada no array
+      adjVertices.enqueueVertex(vertices[toIndex].getNome());
+  }
+}
+
 // Métodos que gerenciam as marcações
 void Graph::clearMarks()
 {
@@ -133,4 +151,117 @@ void Graph::printMatrix()
     }
     std::cout << std::endl;
   }
+}
+
+// Parâmetros: Grafo, o vértice de origem, e o vértice de destino
+void Graph::depthFirstSearch(Graph &graph, Vertex origem, Vertex destino)
+{
+  // Pilha
+  Stack vertexStack;
+  // Var que indica que foi achado ou não um caminho
+  bool found = false;
+  // Vértice auxiliar
+  Vertex vertex;
+
+  // Limpar marcações no grafo
+  graph.clearMarks();
+  // Empilhar a origem
+  vertexStack.push(origem);
+
+  do
+  {
+    // Desempilhando um vérice e alocando seu valor na var aux
+    vertex = vertexStack.pop();
+    // Verificando se o vértice desempilhado acima é compátivel com de destino, isso indicará que há sim um caminho do vértice de origem até o destino
+    if (vertex.getNome() == destino.getNome())
+    {
+      cout << "\nCaminho encontrado, destino: " << vertex.getNome() << "!" << endl;
+      // Indicando que foi encontrado
+      found = true;
+    }
+    else
+    {
+      // Verificando se o vértice que está guardado na var aux não está marcado como visitado, se não estiver ele precisa ser marcado pois já foi visitado
+      if (!graph.isMarked(vertex))
+      {
+        graph.markVertex(vertex);
+        cout << "\nVisitado: " << vertex.getNome();
+        // Fila de adjacents, será passada como parâmetro para a funçào getAdjacentes que irá popular nela os vértices a determinado adjacentes a um determinado vértice.
+        // OBS: Na função getAdjacentes essa fila é passada por referência ou seja, o que for modificado nela denttro da função impactará na fila do lado de fora da função.
+        QueueVertex adjacents;
+        // Verificando adjacentes do vértice
+        graph.getAdjacentsVertex(vertex, adjacents);
+        cout << "\n" << endl;
+        // Enquanto a fila de adjacents for vazia
+        while (!adjacents.isEmpty())
+        {
+          // Desimfileirando um adjacente e guardando seu valor
+          Vertex adjacent = adjacents.dequeueVertex();
+          // Verificando se esse vértice que é adjacente do vértice da vez está marcado como visitado ou não;
+          if (!graph.isMarked(adjacent))
+          {
+            // Se o vértice não está marcado como visitado então ele será empilhado para ser comparado com o vértice que estamos à procura.
+            cout << "Empilhando adjacente do anterior: " << adjacent.getNome() << endl;
+            vertexStack.push(adjacent);
+          }
+        }
+      }
+    }
+    // Enquanto a pilha não estiver vazia, e o caminho ainda não foi achado o processo será refeito
+  } while (!vertexStack.isEmpty() && !found);
+}
+
+void Graph::breadthFirstSearch(Graph &graph, Vertex origem, Vertex destino)
+{
+  // Fila de vértice a serem comparadas
+  QueueVertex vertexQueue;
+  // Var que indica se o procurado foi achado
+  bool found = false;
+  // Var auxiliar
+  Vertex vertex;
+
+  // Limpando as marcações do grafo
+  graph.clearMarks();
+  // Empilhando a origem
+  vertexQueue.enqueueVertex(origem);
+
+  do
+  {
+    // Desimfileirando e guardando o vértice da fila
+    vertex = vertexQueue.dequeueVertex();
+    // Verificando se o vértice desimfileirando acima é compátivel com de destino, isso indicará que há sim um caminho do vértice de origem até o destino
+    if (vertex.getNome() == destino.getNome())
+    {
+      // Indicando que há um caminho
+      cout << "\nCaminho encontrado, destino: " << vertex.getNome() << "!" << endl;
+      found = true;
+    }
+    else
+    {
+      // Se o vértice da vez não for marcado então devemos marcar este como visitado
+      if (!graph.isMarked(vertex))
+      {
+        graph.markVertex(vertex);
+        cout << "\nVisitado: " << vertex.getNome() << endl;
+        // Fila de adjacents, será passada como parâmetro para a funçào getAdjacentes que irá popular nela os vértices a determinado adjacentes a um determinado vértice.
+        // OBS: Na função getAdjacentes essa fila é passada por referência ou seja, o que for modificado nela denttro da função impactará na fila do lado de fora da função.
+        QueueVertex adjacents;
+        // Verificando os adjacentes
+        graph.getAdjacentsVertex(vertex, adjacents);
+        cout << "\n" << endl;
+        // Enquanto adjacents não é vazia
+        while (!adjacents.isEmpty())
+        {
+          Vertex adjacent = adjacents.dequeueVertex();
+          if (!graph.isMarked(adjacent))
+          {
+            // Se o vértice não está marcado como visitado então ele será empilhado para ser comparado com o vértice que estamos à procura, que é o de destino
+            cout << "Empilhando adjacente do anterior: " << adjacent.getNome() << endl;
+            vertexQueue.enqueueVertex(adjacent);
+          }
+        }
+      }
+    }
+    // Enquanto a pilha não estiver vazia, e o caminho ainda não foi achado o processo será refeito
+  } while (!vertexQueue.isEmpty() && !found);
 }

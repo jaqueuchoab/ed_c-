@@ -24,5 +24,15 @@ int main() {
   graph.addEdge(c, e, 4);
 
   graph.printMatrix();
+
+  cout << "\nBusca em profundidade" << endl;
+  cout << "Caminho de A até B?" << endl;
+  graph.depthFirstSearch(graph, a, b);
+
+  cout << "\n---------------------------------\n";
+
+  cout << "\nBusca em largura" << endl;
+  cout << "Caminho de A até B?" << endl;
+  graph.breadthFirstSearch(graph, a, b);
   std::cout << std::endl;
 }

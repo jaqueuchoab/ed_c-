@@ -2,6 +2,7 @@
 #define GRAPH_H
 #include "vertex.hpp"
 #include "queue.hpp"
+#include "queue_vertex.hpp"
 
 class Graph {
   private:
@@ -34,11 +35,15 @@ class Graph {
     int getWeight(Vertex, Vertex);
     // Irá retornar uma fila de vértices que são adjacentes ao vértice indicado nos parâmetros
     void getAdjacents(Vertex, Queue& adjacents);
+    void getAdjacentsVertex(Vertex, QueueVertex& adjacents);
     // Os próximos 3 métodos gerenciam as marcações
     void clearMarks(); // Limpa uma marcação
     void markVertex(Vertex); // Marca um vértice
     bool isMarked(Vertex); // Verififica se o vértice está marcado
     void printMatrix();
+    // Busca em profundade
+    void depthFirstSearch(Graph& graph, Vertex origem, Vertex destino);
+    void breadthFirstSearch(Graph& graph, Vertex origem, Vertex destino);
 };
 
 #endif
