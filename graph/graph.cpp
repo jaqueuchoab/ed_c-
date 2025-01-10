@@ -7,6 +7,7 @@
 
 using namespace std;
 
+// Grafo direcionado
 // Método construtor
 Graph::Graph(int max, int null_edge)
 {
@@ -74,7 +75,6 @@ void Graph::addEdge(Vertex fromVertex, Vertex toVertex, int weight)
 
   edges[row][col] = weight;
 
-  // Remover se o grafo não for direcionado.
   edges[col][row] = weight;
 }
 
