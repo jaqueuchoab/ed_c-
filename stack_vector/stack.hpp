@@ -1,6 +1,6 @@
 #ifndef STACK_H
 #define STACK_H
-#include "node_stack.hpp"
+#include "item_type.hpp"
 
 class Stack
 {
@@ -15,8 +15,10 @@ public:
   ItemType pop();
 
 private:
-  /*Apontará sempre para o elemento do topo, ou seja, o lugar a inserção*/
-  NodeType *structure;
+  // Var para auxiliar no tamanho da pilha
+  int length;
+  // Estrutura linear que irá guardar cada elemento da pilha
+  ItemType* structure;
 };
 
 #endif
