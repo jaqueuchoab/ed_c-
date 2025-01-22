@@ -40,6 +40,7 @@ int main()
     cout << "\n----------------\n";
 
     /*Imprimindo a pilha após as remoções*/
+    cout << "\nPilha após remoções: ";
     stack.print();
   }
   catch (const char *e)
